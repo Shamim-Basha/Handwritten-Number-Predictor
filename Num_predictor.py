@@ -90,6 +90,7 @@ def reset():
     global array
     array = np.zeros((28,28))
     screen.fill(BLACK,(0,0,HEIGHT,HEIGHT))
+    pygame.draw.rect(screen,BLACK,((HEIGHT,HEIGHT//2,WIDTH-HEIGHT,HEIGHT-3*HEIGHT//8)))
     draw_grid()
 
 def predict():
@@ -97,6 +98,14 @@ def predict():
     next,best = (np.argsort(prediction)[-2:])
     print(f"{best} : {prediction[best]*100}")
     print(f"{next} : {prediction[next]*100}")
+
+    text1 = FONT.render(f"{best} : {prediction[best]*100:.2f}%",True,WHITE,BLACK)
+    text2 = FONT.render(f"{next} : {prediction[next]*100:.2f}%",True,WHITE,BLACK)
+
+    pygame.draw.rect(screen,BLACK,((HEIGHT,3*HEIGHT//8+2*text1.get_height(),WIDTH-HEIGHT,HEIGHT-3*HEIGHT//8)))
+
+    screen.blit(text1,(HEIGHT+((WIDTH-HEIGHT)//2) - text1.get_width()//2,3*HEIGHT//8+2*text1.get_height()))
+    screen.blit(text2,(HEIGHT+((WIDTH-HEIGHT)//2) - text2.get_width()//2,3*HEIGHT//8+4*text2.get_height()))
 
 draw_grid()
 reset_rect,predict_rect = draw_buttons() 
